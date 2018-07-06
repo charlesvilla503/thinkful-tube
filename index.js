@@ -1,5 +1,9 @@
 const YOUTUBE_SEARCH_URL = 'https://www.googleapis.com/youtube/v3/search';
 const KEY_VALUE = 'AIzaSyA97KA_0l-D41WEPY3-SMsPi_qa9gchCa0';
+const page = {
+  nextPageToken: null,
+  searchTerm: null,
+}
 
 function getDataFromApi(searchTerm, callback) {
   const settings = {
@@ -9,6 +13,7 @@ function getDataFromApi(searchTerm, callback) {
       key: KEY_VALUE,
       q: `${searchTerm}`,
       type: 'video',
+      pageToken: page.nextPageToken,
     },
     dataType: 'json',
     type: 'GET',
@@ -22,15 +27,25 @@ function renderResult(result) {
   return `
     <div>
       <a class="js-result-name" href="https://www.youtube.com/watch?v=${result.id.videoId}" target="_blank">
-      <img src="${result.snippet.thumbnails.medium.url}" class="thumbnail-yt">${result.snippet.title}</a> <p class="channel-source">More From <a class="js-user-name" href="https://www.youtube.com/channel/${result.snippet.channelId}" target="_blank">${result.snippet.channelTitle}</a></p>
+      <img src="${result.snippet.thumbnails.medium.url}" class="thumbnail-yt">${result.snippet.title}</a>
+      <p class="channel-source">More From <a class="js-user-name" href="https://www.youtube.com/channel/${result.snippet.channelId}" target="_blank">${result.snippet.channelTitle}</a></p>
       <hr>
     </div>
   `;
 }
 
 function displaySearchData(data) {
+  page.nextPageToken = data.nextPageToken;
   const results = data.items.map((item, index) => renderResult(item));
   $('.js-search-results').html(results);
+  results.length ? $('.js-more-vids').removeClass('hidden') : $('.js-more-vids').addClass('hidden');
+}
+
+function moreVids() {
+  $('.js-more-vids').on('click', event => {
+    event.preventDefault();
+    getDataFromApi(page.searchTerm, displaySearchData);
+  })
 }
 
 function watchSubmit() {
@@ -39,9 +54,13 @@ function watchSubmit() {
     const queryTarget = $(event.currentTarget).find('.js-query');
     const query = queryTarget.val();
     // clear out the input
+    page.searchTerm = query;
     queryTarget.val("");
     getDataFromApi(query, displaySearchData);
   });
 }
 
-$(watchSubmit);
+$(() => {
+  watchSubmit()
+  moreVids()
+});

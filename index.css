@@ -6,6 +6,10 @@ main {
   text-align: center;
 }
 
+.hidden {
+  display: none;
+}
+
 .js-result-name {
   font-family: 'IBM Plex Sans', sans-serif;'
   font-size: 0.5rem;
