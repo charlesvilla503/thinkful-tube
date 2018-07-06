@@ -25,8 +25,8 @@ function getDataFromApi(searchTerm, callback) {
 
 function renderResult(result) {
   return `
-    <div>
-      <a class="js-result-name" href="https://www.youtube.com/watch?v=${result.id.videoId}" target="_blank">
+    <div class="js-result-name">
+      <a href="https://www.youtube.com/watch?v=${result.id.videoId}" data-lity>
       <img src="${result.snippet.thumbnails.medium.url}" class="thumbnail-yt">${result.snippet.title}</a>
       <p class="channel-source">More From <a class="js-user-name" href="https://www.youtube.com/channel/${result.snippet.channelId}" target="_blank">${result.snippet.channelTitle}</a></p>
       <hr>
@@ -60,7 +60,5 @@ function watchSubmit() {
   });
 }
 
-$(() => {
-  watchSubmit()
-  moreVids()
-});
+$(watchSubmit);
+$(moreVids);
