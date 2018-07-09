@@ -34,11 +34,24 @@ function renderResult(result) {
   `;
 }
 
+function showSearchTerm(query) {
+  return `
+  <div class="js-search-display">
+  <p class="channel-source">You searched for "${page.searchTerm}"</p>
+  </div>
+  `;
+}
+
 function displaySearchData(data) {
   page.nextPageToken = data.nextPageToken;
   const results = data.items.map((item, index) => renderResult(item));
   $('.js-search-results').html(results);
-  results.length ? $('.js-more-vids').removeClass('hidden') : $('.js-more-vids').addClass('hidden');
+  // results.length ? $('.js-more-vids').removeClass('hidden') : $('.js-more-vids').addClass('hidden');
+  if (results.length >= 0) {
+    $('.js-more-vids').removeClass('hidden');
+  } else {
+    $('.js-more-vids').addClass('hidden');
+  }
 }
 
 function moreVids() {
@@ -56,6 +69,8 @@ function watchSubmit() {
     // clear out the input
     page.searchTerm = query;
     queryTarget.val("");
+    console.log(page.searchTerm);
+    $('.js-search-display').html(showSearchTerm);
     getDataFromApi(query, displaySearchData);
   });
 }
