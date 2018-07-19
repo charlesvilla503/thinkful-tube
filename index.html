@@ -12,19 +12,21 @@
 </head>
 
 <body>
-  <main>
+  <main role="main" aria-live="assertive">
     <h1>YouTube Search</h1>
-    <form action="#" class="js-search-form">
-      <label for="query"></label>
-      <input type="text" class="js-query">
-      <button type="submit">Search</button>
-    </form>
+    <section role="region">
+      <form action="#" class="js-search-form">
+        <label for="query"></label>
+        <input type="text" class="js-query" placeholder="Enter Keywords . . .">
+        <button type="submit">Search</button>
+      </form>
+    </section>
 
-    <h2>Results</h2>
+    <div class="result-header hidden" aria-live="assertive"><h2>Results</h2></div>
     <div class="js-search-display"></div>
-    <div class="js-search-results "></div>
+    <div class="js-search-results" aria-live="assertive"></div>
 
-    <button class="js-more-vids hidden">More Results</button>
+    <button class="js-more-vids hidden" aria-live="polite">More Results</button>
   </main>
   <script src="index.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lity/2.3.1/lity.js"></script>

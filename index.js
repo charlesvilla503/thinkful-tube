@@ -27,7 +27,7 @@ function renderResult(result) {
   return `
     <div class="js-result-name">
       <a href="https://www.youtube.com/watch?v=${result.id.videoId}" data-lity>
-      <img src="${result.snippet.thumbnails.medium.url}" class="thumbnail-yt">${result.snippet.title}</a>
+      <img src="${result.snippet.thumbnails.medium.url}" class="thumbnail-yt" alt="">${result.snippet.title}</a>
       <p class="channel-source">More From <a class="js-user-name" href="https://www.youtube.com/channel/${result.snippet.channelId}" target="_blank">${result.snippet.channelTitle}</a></p>
       <hr>
     </div>
@@ -36,7 +36,7 @@ function renderResult(result) {
 
 function showSearchTerm(query) {
   return `
-  <div class="js-search-display">
+  <div class="js-search-display" aria-live="assertive">
   <p class="channel-source">You searched for "${page.searchTerm}"</p>
   </div>
   `;
@@ -47,6 +47,7 @@ function displaySearchData(data) {
   const results = data.items.map((item, index) => renderResult(item));
   $('.js-search-results').html(results);
   //Conditional (ternary) Operator - shorthand for if/else
+  results.length ? $('.result-header').removeClass('hidden') : $('.result-header').addClass('hidden');
   results.length ? $('.js-more-vids').removeClass('hidden') : $('.js-more-vids').addClass('hidden');
 }
 
